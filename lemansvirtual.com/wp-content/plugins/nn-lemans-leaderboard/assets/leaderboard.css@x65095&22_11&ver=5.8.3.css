@@ -1,0 +1,146 @@
+.xmlleaderboard {
+}
+
+.xmlleaderboard table {
+    width:100%;
+    margin:0 auto;
+}
+
+.xmlleaderboard tr.header .orderby {
+    font-weight:bold;
+}
+
+.xmlleaderboard tr.header .orderby.asc::after {
+    content: url(../../../themes/le-mans/dist/images/chevron-down.svg);
+    margin-left: 4px;
+    width: 10px;
+    display: inline-block;
+    transform: rotate(180deg);
+}
+.xmlleaderboard tr.header .orderby.desc::after {
+    content: url(../../../themes/le-mans/dist/images/chevron-down.svg);
+    margin-left: 4px;
+    width: 10px;
+    display: inline-block;
+}
+
+.field-CarNumber,.field-Tyre {
+    width:75px;
+}
+
+.field-CarType {
+    width:100px;
+    box-sizing:content-box;
+}
+
+.field-Laps, .field-Position {
+    width:100px;
+}
+
+.leaderboardwindow.active {
+    display:block;
+
+}
+
+.leaderboardwindow.inactive {
+    display:none;
+
+}
+
+
+
+.racewindow.active {
+    display:block;
+
+}
+
+.racewindow.inactive {
+    display:none;
+
+}
+
+
+.leaderboardwindow {
+    
+    padding: 30px;
+    clear:both;
+}
+
+.leaderboardtabs li.active{
+    font-weight: bold;
+   
+}
+
+.leaderboardtabs li.inactive  {
+    font-weight:normal;
+    background:#eee;
+}
+
+.leaderboardtabs li {
+    float:left;
+    padding:5px 10px;
+    cursor:pointer;
+}
+
+.leaderboardtabs {
+    list-style: none;
+    margin-left: 0px;
+    padding-left: 0px;
+    height: 36px;
+    margin-bottom: 0px;
+}
+
+
+@media screen and (max-width: 768px) {
+    
+    .xmlleaderboard td.hidemobile {
+        display:none;
+    }
+}
+
+
+@media screen and (max-width: 1024px) {
+    
+    .xmlleaderboard td.hidetablet {
+        display:none;
+    }
+}
+
+
+.driverconcertina.collapsed, .driverlist.expanded {
+    display:block;
+    cursor:pointer;
+    position:relative;
+}
+
+.driverconcertina.collapsed .chevron {
+    content: url(../../../themes/le-mans/dist/images/chevron-down.svg);
+    margin-left: 14px;
+    width: 10px;
+    display: block;
+    transform: rotate(180deg);
+
+    display: block;
+    position:absolute;
+    top:5px;
+    right:-5px;
+    float:right;
+}
+
+.driverconcertina.expanded, .driverlist.collapsed {
+    display:none;
+    cursor:pointer;
+
+}
+
+.driverlist.expanded .chevron {
+    content: url(../../../themes/le-mans/dist/images/chevron-down.svg);
+    margin-left: 14px;
+    width: 10px;
+    display: block;
+    position:absolute;
+    top:5px;
+    right:-5px;
+    float:right;
+}
+

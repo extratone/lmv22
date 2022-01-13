@@ -1,0 +1,493 @@
+window.addEventListener('DOMContentLoaded', (event) => {
+    var leaderboards = document.getElementsByClassName('xmlleaderboard');
+    for (var l=0; l < leaderboards.length; l++) {
+        leaderboard = leaderboards[l];
+        leaderboard.setAttribute('id', 'xml-leaderboard-'+l);
+        var xmlfile = leaderboard.getAttribute('data-xmlurl');
+        loadLeaderboard('xml-leaderboard-'+l, xmlfile);
+        setRace();
+    }
+
+});
+
+
+var overallStandings = {};
+var overallStandingsTabNumber = 0;
+
+function loadLeaderboard(leaderboardid, xmlfile) {
+
+
+    var leaderboard = document.getElementById(leaderboardid);
+    if (xmlfile) {
+        
+        
+
+
+        const xhttp = new XMLHttpRequest();
+
+        // Define a callback function
+        xhttp.onload = function() {
+            var parser = new DOMParser();
+            var leaderboarddata = parser.parseFromString(xhttp.responseText, "application/xml");
+            var drivers = leaderboarddata.getElementsByTagName('Driver');
+
+            out = '';
+            var processedDrivers = new Array();
+            for (var d=0; d<drivers.length; d++) {
+                var driver = new Array();
+                var bestLap = '';
+                var elapsedTime = 0;
+                for (var c=0; c<drivers[d].childNodes.length; c++) {
+                    
+                    if (drivers[d].childNodes[c].localName) {
+                        if (drivers[d].childNodes[c].localName == 'Lap') {
+                            var lapTime = drivers[d].childNodes[c].innerHTML;
+                            if (bestLap == '') {
+                                bestLap = drivers[d].childNodes[c];
+                            }
+                            if (lapTime > '') {
+                                elapsedTime = elapsedTime + (lapTime/1)
+                                if (lapTime/1 < bestLap.innerHTML/1) {
+                                    bestLap = drivers[d].childNodes[c];
+                                }
+                            }
+                        } else {
+
+
+                            driver[drivers[d].childNodes[c].localName] = drivers[d].childNodes[c].innerHTML;
+
+
+                            if (isNumeric(driver[drivers[d].childNodes[c].localName])) {
+                                driver[drivers[d].childNodes[c].localName] = driver[drivers[d].childNodes[c].localName]/1;
+                            }
+                        }
+                    } else {
+                    }
+                }   
+
+                if (bestLap.attributes && bestLap.attributes['num']) {
+                    driver['BestLapNumber'] = bestLap.attributes['num']['nodeValue'];
+                } else {
+                    driver['BestLapNumber'] = 'n/a'
+                }
+                driver['ElapsedTime'] = elapsedTime
+                processedDrivers.push(driver);
+            }
+
+            renderLeaderboard(leaderboard.getAttribute('id'), processedDrivers)
+
+        }
+        
+        // Send a request
+        xhttp.open("GET", xmlfile);
+        xhttp.send();
+    } else {
+        overallStandings = overallStandingsTab[overallStandingsTabNumber];
+        overallStandingsTabNumber++;
+       // alert(leaderboardid);
+        if(overallStandings) {
+            // Show the default leaderboard
+            var processedDrivers = new Array();
+
+            for (var key in overallStandings) {
+
+                var driver = overallStandings[key];
+                driver.CarNumber = '-'
+                driver.CarImage = overallStandings[key]['CarImage'];
+                driver.Name = '';
+                driver.Laps = '-';
+                driver.ElapsedTime = '';
+                driver.BestLapTime = '';
+                driver.BestLapNumber = '-';
+                driver.Name = '';
+                driver.Concertina = false
+                for (var driverkey in driver.Drivers) {
+                  //  console.log(driverkey);
+                    if (driverkey > 0) {
+                        driver.Name = driver.Name + '<br />' + driver.Drivers[driverkey];
+                        driver.Concertina= true   
+                    } else {
+                        driver.Name = driver.Name + driver.Drivers[driverkey];
+
+                    }
+                }
+                processedDrivers.push(driver); 
+            }
+            renderLeaderboard(leaderboard.getAttribute('id'), processedDrivers)
+        }       
+    }
+}
+
+function renderLeaderboard(leaderboardid, drivers) {
+
+    var leaderboard = document.getElementById(leaderboardid);
+
+    if (!leaderboard.getAttribute('data-sort')) {
+        leaderboard.setAttribute('data-sort', 'Position');
+        leaderboard.setAttribute('data-order', 'asc');
+    } 
+    drivers = sortData(drivers, leaderboard.getAttribute('data-sort'), leaderboard.getAttribute('data-order'));
+    var fields = {
+        'Position': { 
+            'label' : {
+                'en-GB' : 'Pos',
+                'fr-FR' : 'Pos'
+            }
+        },
+        'TeamName': {
+            'label' : {
+                'en-GB' : 'Team / Driver',
+                'fr-FR' : 'Equipe / Pilote' 
+            }
+        },
+        'CarNumber': {
+            'label' : {
+                'en-GB' : 'N#',
+                'fr-FR' : 'N#'
+            },
+            'disablemobile' : true,
+            'disabletablet' : true
+        },
+        'CarType': {
+            'label' : {
+                'en-GB' : 'Car',
+                'fr-FR' : 'Auto'
+            },
+            'disablemobile' : true,
+            'disabletablet' : true
+        },
+        'Laps': {
+            'label' : {
+                'en-GB' : 'Laps',
+                'fr-FR' : 'Tours'
+            },
+            'disablemobile' : true,
+            'disabletablet' : true
+        },
+        'ElapsedTime': {
+            'label' : {
+                'en-GB' : 'Elapsed Time',
+                'fr-FR' : 'Temps écoulé'
+            },
+            'disablemobile' : true
+        },
+        'BestLapTime':  {
+            'label' : {
+                'en-GB' : 'Best Lap Time',
+                'fr-FR' : 'Meilleur temps au tour'
+            },
+            'disablemobile' : true,
+            'disabletablet' : true
+        },
+        'BestLapNum':  {
+            'label' : {
+                'en-GB' : 'Best Lap Number',
+                'fr-FR' : 'Meilleur numéro de tour'
+            },
+            'disablemobile' : true,
+            'disabletablet' : true
+        }
+    };
+
+    var out = `<tr class="header">`;
+
+    //var lang = document.getElementsByTagName('html')[0].getAttribute('lang');
+    //if (!lang) {
+        var lang = 'en-GB';
+    //}
+    var mobilehide = new Array();
+    var tablethide = new Array();
+    for (var field in fields) {
+        //console.log(field);
+        var disablemobile = '';
+        if (fields[field]['disablemobile']) {
+            disablemobile = 'hidemobile';
+        }
+        mobilehide[field] = disablemobile;
+
+        var disabletablet = '';
+        if (fields[field]['disabletablet']) {
+            disabletablet = 'hidetablet';
+        }
+        tablethide[field] = disabletablet;
+
+        if (fields[field]['label'][lang]) {
+            var label=fields[field]['label'][lang];
+        } else {
+            var label=fields[field]['label']['en-GB'];
+        }
+        var sortClass = '';
+        if (leaderboard.getAttribute('data-sort') == field) {
+            sortClass = 'orderby ' + leaderboard.getAttribute('data-order') ;
+        }
+        
+        out = out + `<td style="cursor:pointer" class="field-`+field+` `+sortClass+` `+disablemobile+` `+disabletablet+`" onclick="orderBy('`+field+`', '`+leaderboardid+`');">`+label+`</td>`;
+    }
+
+    out = out+`        </tr>`;
+
+
+    for (var d=0; d < drivers.length; d++) {
+        var driver = drivers[d];
+        var nth = determineOrdinal(driver['Position']);
+
+        var CarImage = driver['CarType'];
+       
+        if (overallStandings && overallStandings[driver['TeamName'].toLowerCase()]) {
+
+            if (overallStandings[driver['TeamName'].toLowerCase()]['CarImage']) {
+                CarImage = '<img src="'+overallStandings[driver['TeamName'].toLowerCase()]['CarImage']+'" width="100" height="29" />';
+            }
+        }
+
+      
+        driver['BestLapTimeDisplayed'] = fancyTimeFormat(driver['BestLapTime']);
+        driver['ElapsedTimeDisplayed'] = fancyTimeFormat(driver['ElapsedTime']);
+        var hashash='';
+        if (driver['CarNumber'] != '-') {
+            hashash='#';
+        }
+
+        concertina = '';
+        concertinaclose = '';
+        if (driver.Concertina) {
+            concertina = '<div class="driverconcertina collapsed" onclick="toggleList('+d+');" id="driver_'+d+'_concertina">'+driver.Drivers[0]+'<div class="chevron"></div></div><div onclick="toggleList('+d+');" class="driverlist collapsed" id="driver_'+d+'_list">';
+            concertinaclose = '<div class="chevron"></div></div>';
+        }
+        out = out + `
+        <tr>
+            <td class="`+mobilehide['Position']+` `+tablethide['Position']+`"><div class="position-box"><div class="position-value"><dataelement data-label='Position'>`+driver['Position']+`</dataelement></div><div class="position-ordinal">`+nth+`</div></div></td>
+            <td class="`+mobilehide['TeamName']+` `+tablethide['TeamName']+`"><dataelement class='teamname' data-label='TeamName'>`+driver['TeamName'] + `</dataelement><br />
+            <dataelement data-label='Name'>` + concertina + driver['Name'] + concertinaclose + `</dataelement></td>
+            <td class="`+mobilehide['CarNumber']+` `+tablethide['CarNumber']+`">`+hashash+`<dataelement data-label='CarNumber'>`+driver['CarNumber']+`</dataelement></td>
+
+
+            <td class="`+mobilehide['CarType']+` `+tablethide['CarType']+`"><dataelement data-label='CarType'>`+CarImage+`</dataelement></td>
+
+            <td class="`+mobilehide['Laps']+` `+tablethide['Laps']+`"><dataelement data-label='Laps'>`+driver['Laps']+`</dataelement></td>
+            <td class="`+mobilehide['ElapsedTime']+` `+tablethide['ElapsedTime']+`"><div class='hidden'><dataelement data-label='ElapsedTime'>`+driver['ElapsedTime']+`</dataelement></div>`+driver['ElapsedTimeDisplayed']+`</td>
+            <td class="`+mobilehide['BestLapTime']+` `+tablethide['BestLapTime']+`"><div class='hidden'><dataelement data-label='BestLapTime'>`+driver['BestLapTime']+`</dataelement></div>`+driver['BestLapTimeDisplayed']+`</td>
+            <td class="`+mobilehide['BestLapNum']+` `+tablethide['BestLapNum']+`"><dataelement data-label='BestLapNumber'>`+driver['BestLapNumber']+`</dataelement></td>
+        </tr>`;
+    }
+    leaderboard.innerHTML = '<table>' + out + '</table>';
+}
+
+function sortData(data, sort, order) {
+    
+    var sortObject = {};
+    sortObject[sort] = order;
+    data = multiSort(data,sortObject);
+    return data;
+}
+
+function orderBy(field, leaderboardid) {
+    var leaderboard = document.getElementById(leaderboardid);
+
+    if (leaderboard.getAttribute('data-sort')) {
+        if (leaderboard.getAttribute('data-sort') == field) {
+            if (leaderboard.getAttribute('data-order')) {
+                if (leaderboard.getAttribute('data-order') == 'asc') {
+                    leaderboard.setAttribute('data-order', 'desc')
+                } else {
+                    leaderboard.setAttribute('data-order', 'asc')
+
+                }
+            } else {
+                leaderboard.setAttribute('data-order', 'asc')
+            }
+        } else {
+            leaderboard.setAttribute('data-order', 'asc')
+        }
+    }
+
+    leaderboard.setAttribute('data-sort', field);
+    leaderboarddata = extractData(leaderboard);
+    renderLeaderboard(leaderboardid, leaderboarddata);
+}
+
+function extractData(leaderboard) {
+    var leaderboarddata = new Array();
+    var rows = leaderboard.getElementsByTagName('tr');
+    for (var r=1; r<rows.length; r++) {
+        var row = rows[r];
+        var leaderboardrow = new Array();
+        var dataelements = row.getElementsByTagName('dataelement');
+        for (var d=0; d < dataelements.length; d++) {
+            var dataelement = dataelements[d];
+            var label = dataelement.getAttribute('data-label');
+            var value = dataelement.innerHTML;
+            if (isNumeric(value)) {
+                value = value/1;
+            }
+            leaderboardrow[label] = value;
+        }
+        leaderboarddata.push(leaderboardrow);
+    }
+    return leaderboarddata;
+
+}
+
+function isNumeric(str) {
+    if (typeof str != "string") return false // we only process strings!  
+    return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+           !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+  }
+
+function multiSort(array, sortObject = {}) {
+    const sortKeys = Object.keys(sortObject);
+
+    // Return array if no sort object is supplied.
+    if (!sortKeys.length) {
+        return array;
+    }
+
+    // Change the values of the sortObject keys to -1, 0, or 1.
+    for (let key in sortObject) {
+        sortObject[key] = sortObject[key] === 'desc' || sortObject[key] === -1 ? -1 : (sortObject[key] === 'skip' || sortObject[key] === 0 ? 0 : 1);
+    }
+
+    const keySort = (a, b, direction) => {
+        direction = direction !== null ? direction : 1;
+
+        if (a === b) { // If the values are the same, do not switch positions.
+            return 0;
+        }
+
+        // If b > a, multiply by -1 to get the reverse direction.
+        return a > b ? direction : -1 * direction;
+    };
+
+    return array.sort((a, b) => {
+        let sorted = 0;
+        let index = 0;
+
+        // Loop until sorted (-1 or 1) or until the sort keys have been processed.
+        while (sorted === 0 && index < sortKeys.length) {
+            const key = sortKeys[index];
+
+            if (key) {
+                const direction = sortObject[key];
+
+                sorted = keySort(a[key], b[key], direction);
+                index++;
+            }
+        }
+
+        return sorted;
+    });
+}
+
+
+function setRace() {
+    if (window.location.hash) {
+
+        for (var r=0; r < document.getElementById("raceselector").options.length; r++) {
+            var selRace = document.getElementById("raceselector").options[r];
+
+            if (selRace.dataset.url == window.location.hash.replace('#','').replace(/ /g, '-').toLowerCase()) {
+                document.getElementById("raceselector").selectedIndex = r;
+            }
+        }
+        selectRace(document.getElementById('raceselector'));
+    } else {
+        selectRace(document.getElementById('raceselector'));
+    }
+}
+
+function selectRace(obj) {
+    window.location.hash = '';
+
+    var racewindows = document.getElementsByClassName('racewindow');
+    for (var r=0; r<racewindows.length; r++) {
+        var racewindow = racewindows[r]
+        racewindow.classList.remove('active');
+        racewindow.classList.add('inactive');
+    }
+    document.getElementById('racewindow_'+obj.value).classList.remove('inactive');
+    document.getElementById('racewindow_'+obj.value).classList.add('active');
+
+    window.location.hash=obj.options[obj.selectedIndex].dataset.url;
+}
+
+function showLeaderboardTab(id, obj) {
+    var tabs = document.getElementsByClassName('leaderboardtab');
+    var race = obj.getAttribute('data-race');
+    var windows = document.getElementsByClassName('leaderboardwindow');
+    for (var t=0; t<tabs.length; t++) {
+        var tab = tabs[t];
+        if (tab.getAttribute('data-race') == race) {
+            tab.classList.remove('active');
+            tab.classList.add('inactive');
+        }
+    }
+
+    for (var t=0; t<windows.length; t++) {
+        var win = windows[t];
+        if (win.getAttribute('data-race') == race) {
+            win.classList.remove('active');
+            win.classList.add('inactive');
+        }
+    }
+
+    var selectedtab = document.getElementById('leaderboardtab_' + id);
+    var selectedwindow = document.getElementById('leaderboardwindow_' + id);
+    selectedtab.classList.add('active');
+    selectedtab.classList.remove('inactive');
+    selectedwindow.classList.add('active');
+    selectedwindow.classList.remove('inactive');
+}
+
+
+function determineOrdinal(d) {
+    if (d > 3 && d < 21) return 'th';
+    switch (d % 10) {
+        case 1:  return "st";
+        case 2:  return "nd";
+        case 3:  return "rd";
+        default: return "th";
+    }
+}
+
+
+function fancyTimeFormat(duration)
+{   
+    
+    if (duration && duration != 'undefined' && duration != 'N/A' && duration != 'NaN') {
+        //console.log(duration);
+        var dec = ('' + duration).split('.')[1].substring(0,3);
+
+
+        // Hours, minutes and seconds
+        var hrs = ~~(duration / 3600);
+        var mins = ~~((duration % 3600) / 60);
+        var secs = ~~duration % 60;
+
+        // Output like "1:01" or "4:03:59" or "123:03:59"
+        var ret = "";
+
+        if (hrs > 0) {
+            ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+        }
+
+        ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+        ret += "" + secs;
+        return ret + '.' + dec;
+    } else {
+        return 'n/a'
+    }
+}
+
+function toggleList(d) {
+    if (document.getElementById('driver_'+d+'_concertina').classList.contains('collapsed')) {
+        document.getElementById('driver_'+d+'_concertina').classList.remove('collapsed');
+        document.getElementById('driver_'+d+'_concertina').classList.add('expanded');       
+        document.getElementById('driver_'+d+'_list').classList.remove('collapsed');
+        document.getElementById('driver_'+d+'_list').classList.add('expanded');
+    } else {
+        document.getElementById('driver_'+d+'_concertina').classList.remove('expanded');
+        document.getElementById('driver_'+d+'_concertina').classList.add('collapsed');       
+        document.getElementById('driver_'+d+'_list').classList.remove('expanded');
+        document.getElementById('driver_'+d+'_list').classList.add('collapsed'); 
+    }
+}

@@ -12,7 +12,7 @@ For further media information contact Fiona Miller, Miller Media & Communication
 
 [www.lemansvirtual.com](http://www.lemansvirtual.com)
 
-**About Le Mans Virtual Series**
+## About Le Mans Virtual Series
 
 Le Mans Virtual Series is a global, elite esports series made up of 5 rounds which bring together endurance racing and sim racing’s top teams to compete on some of the world’s most famous racetracks. International FIA-licensed real-world drivers are teamed up with leading esports protagonists to take on endurance classics for a total prize fund of US$250,000, culminating in the prestigious 24 Hours of Le Mans Virtual which will take place live and televised at the Autosport Show International in Birmingham, UK. The Le Mans Virtual Series is a joint venture between leading racing game developer, publisher and esports ecosystem provider of official motorsport racing series throughout the world, Motorsport Games, and ACO-the creator and organizer of the world-famous 24 Hours of Le Mans and promoter of the FIA WEC.  [www.lemansvirtual.com](http://www.lemansvirtual.com)
 

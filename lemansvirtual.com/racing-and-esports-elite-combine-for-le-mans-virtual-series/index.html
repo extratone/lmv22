@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+	
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+	<link rel="apple-touch-icon-precomposed" sizes="192x192" href="https://d38jnz52bk9bao.cloudfront.net/wp-content/themes/le-mans/dist/images/icons/apple-touch-icon.png?x65095">
+	<link rel="shortcut icon" href="https://d38jnz52bk9bao.cloudfront.net/favicon.ico?x65095">
+
+
+		<script type="text/javascript">
+		document.addEventListener("DOMContentLoaded", function(){
+			let showMoreLink = document.getElementById('showMoreLink');
+			if (showMoreLink) {
+				document.getElementById('showMoreLink').addEventListener('click', fetchMoreBlogPosts);
+			}
+		});
+
+		function fetchMoreBlogPosts (e) {
+			e.preventDefault();
+			e.currentTarget.classList.add('disabled');
+			e.currentTarget.disabled = true;
+  			setTimeout(function(){
+				let button = document.getElementById("showMoreLink");
+				if( button !== null ) {
+					button.classList.remove("disabled");
+					button.disabled = false;
+				}
+			}, 1000);
+
+			let timesFetched = parseInt(e.target.dataset.timesFetched);
+			let postID = '329';
+
+			targetURL = '';
+
+			let showMoreLink = document.getElementById('showMoreLink');
+			if (showMoreLink.classList.contains('single-more')) {
+				targetURL = 'https://lemansvirtual.com/wp-admin/admin-ajax.php?action=fetch_single_blog_posts';
+			} else {
+				targetURL = 'https://lemansvirtual.com/wp-admin/admin-ajax.php?action=fetch_blog_posts';
+			}
+
+			targetURL += `&requestedFrom=${postID}`;
+			if ( timesFetched > 0 ) targetURL += `&timesFetched=${timesFetched}`;
+			
+			let xhr = new XMLHttpRequest();
+				xhr.onload = function(a){
+					if(this.status === 200) {
+						let data = JSON.parse(this.responseText);
+						if(data.length > 0) {
+							buildNewBlogPostsRow(data);
+						}
+
+						let button = document.getElementById('showMoreLink');
+						button.dataset.timesFetched = parseInt(button.dataset.timesFetched) + 1;
+
+						let $postLength;
+
+						if (showMoreLink.classList.contains('single-more')) {
+							$postLength = 2;
+						} else {
+							$postLength = 7;
+						}
+
+						if (data.length < $postLength) {
+							document.getElementById('showMoreLink').remove();
+						}
+					} else {
+						console.log("AJAX error when fetching Case Studies: " + this.status);
+					}
+				};
+			xhr.open("POST", targetURL);
+			xhr.send();
+		}
+
+		function buildNewBlogPostsRow (data) {
+			data.forEach(function(post){
+				// Build the elements
+				let article = document.createElement('article');
+					article.classList.add('post');
+				let row = document.createElement('div');
+					row.classList.add('inner-row');
+					// Thumbnail
+				let column1 = document.createElement('div');
+					column1.classList.add('column-2');
+				let imagePermalink = document.createElement('a');
+					imagePermalink.classList.add('post-thumbnail');
+					imagePermalink.href = post.permalink;
+				let image = document.createElement('img');
+					image.className = 'attachment-post-thumbnail size-post-thumbnail wp-post-image';
+					image.src = post.thumbnail;
+					// Content
+				let column2 = document.createElement('div');
+					column2.classList.add('column-2');
+				let header = document.createElement('header');
+					header.classList.add('entry-header');
+				let entryMeta = document.createElement('div');
+					entryMeta.classList.add('entry-meta');
+				let author = document.createElement('div');
+					author.classList.add('post-author');
+					author.textContent = post.author;
+				let date = document.createElement('div');
+					date.textContent = post.date;
+				let title = document.createElement('h3');
+					title.classList.add('entry-title');
+					title.textContent = post.title;
+				let titlePermalink = document.createElement('a');
+					titlePermalink.href = post.permalink;
+				let content = document.createElement('div');
+					content.classList.add('entry-content');
+				let contentExcerpt = post.content;
+				let Excerpt = contentExcerpt.substr(0, 104);
+					content.textContent = Excerpt + '...';
+				let readmore = document.createElement('a');
+					readmore.classList.add('readmore');
+					readmore.href = post.permalink;
+					readmore.textContent = 'Read more...';
+
+				// Arrange into a single element
+				article.appendChild(row);
+				row.appendChild(column1);
+				column1.appendChild(imagePermalink);
+				imagePermalink.appendChild(image);
+				
+				row.appendChild(column2);
+				column2.appendChild(header);
+				header.appendChild(entryMeta);
+				entryMeta.appendChild(author);
+				entryMeta.appendChild(date);
+				header.appendChild(titlePermalink);
+				titlePermalink.appendChild(title);
+				column2.appendChild(content);
+				column2.appendChild(readmore);
+
+				document.querySelector('.blog-container').appendChild(article);
+			});
+		}
+	</script>
+	<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+
+	<!-- This site is optimized with the Yoast SEO plugin v17.6 - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>Racing and esports elite combine for Le Mans Virtual Series - Le Mans Virtual Series</title>
+	<link rel="canonical" href="../index.html@p=329.html" />
+	<meta property="og:locale" content="en_GB" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="Racing and esports elite combine for Le Mans Virtual Series - Le Mans Virtual Series" />
+	<meta property="og:description" content="Silverstone, UK – September 7, 2021. The entry list for the newly launched Le Mans Virtual Series, the global, elite [&hellip;]" />
+	<meta property="og:url" content="https://lemansvirtual.com/racing-and-esports-elite-combine-for-le-mans-virtual-series/" />
+	<meta property="og:site_name" content="Le Mans Virtual Series" />
+	<meta property="article:publisher" content="https://www.facebook.com/lemansvirtual" />
+	<meta property="article:published_time" content="2021-09-07T13:00:37+00:00" />
+	<meta property="article:modified_time" content="2021-09-14T12:05:25+00:00" />
+	<meta property="og:image" content="https://d38jnz52bk9bao.cloudfront.net/wp-content/uploads/2021/09/LMVS_team-graphic-V2.jpg?x65095" />
+	<meta property="og:image:width" content="1920" />
+	<meta property="og:image:height" content="1080" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:creator" content="@lemansvirtual" />
+	<meta name="twitter:site" content="@lemansvirtual" />
+	<meta name="twitter:label1" content="Written by" />
+	<meta name="twitter:data1" content="caretaker" />
+	<meta name="twitter:label2" content="Estimated reading time" />
+	<meta name="twitter:data2" content="4 minutes" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://lemansvirtual.com/#organization","name":"Le Mans Virtual","url":"https://lemansvirtual.com/","sameAs":["https://www.facebook.com/lemansvirtual","https://www.instagram.com/lemansvirtual/","https://www.youtube.com/traxiongg","https://twitter.com/lemansvirtual"],"logo":{"@type":"ImageObject","@id":"https://lemansvirtual.com/#logo","inLanguage":"en-GB","url":"https://d38jnz52bk9bao.cloudfront.net/wp-content/uploads/2021/08/cover-1.png?x65095","contentUrl":"https://d38jnz52bk9bao.cloudfront.net/wp-content/uploads/2021/08/cover-1.png?x65095","width":1920,"height":1080,"caption":"Le Mans Virtual"},"image":{"@id":"https://lemansvirtual.com/#logo"}},{"@type":"WebSite","@id":"https://lemansvirtual.com/#website","url":"https://lemansvirtual.com/","name":"Le Mans Virtual Series","description":"","publisher":{"@id":"https://lemansvirtual.com/#organization"},"potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://lemansvirtual.com/?s={search_term_string}"},"query-input":"required name=search_term_string"}],"inLanguage":"en-GB"},{"@type":"ImageObject","@id":"https://lemansvirtual.com/fr/racing-and-esports-elite-combine-for-le-mans-virtual-series/#primaryimage","inLanguage":"en-GB","url":"https://d38jnz52bk9bao.cloudfront.net/wp-content/uploads/2021/09/LMVS_team-graphic-V2.jpg?x65095","contentUrl":"https://d38jnz52bk9bao.cloudfront.net/wp-content/uploads/2021/09/LMVS_team-graphic-V2.jpg?x65095","width":1920,"height":1080},{"@type":"WebPage","@id":"https://lemansvirtual.com/fr/racing-and-esports-elite-combine-for-le-mans-virtual-series/#webpage","url":"https://lemansvirtual.com/fr/racing-and-esports-elite-combine-for-le-mans-virtual-series/","name":"Racing and esports elite combine for Le Mans Virtual Series - Le Mans Virtual Series","isPartOf":{"@id":"https://lemansvirtual.com/#website"},"primaryImageOfPage":{"@id":"https://lemansvirtual.com/fr/racing-and-esports-elite-combine-for-le-mans-virtual-series/#primaryimage"},"datePublished":"2021-09-07T13:00:37+00:00","dateModified":"2021-09-14T12:05:25+00:00","breadcrumb":{"@id":"https://lemansvirtual.com/fr/racing-and-esports-elite-combine-for-le-mans-virtual-series/#breadcrumb"},"inLanguage":"en-GB","potentialAction":[{"@type":"ReadAction","target":["https://lemansvirtual.com/fr/racing-and-esports-elite-combine-for-le-mans-virtual-series/"]}]},{"@type":"BreadcrumbList","@id":"https://lemansvirtual.com/fr/racing-and-esports-elite-combine-for-le-mans-virtual-series/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://lemansvirtual.com/"},{"@type":"ListItem","position":2,"name":"Racing and esports elite combine for Le Mans Virtual Series"}]},{"@type":"Article","@id":"https://lemansvirtual.com/fr/racing-and-esports-elite-combine-for-le-mans-virtual-series/#article","isPartOf":{"@id":"https://lemansvirtual.com/fr/racing-and-esports-elite-combine-for-le-mans-virtual-series/#webpage"},"author":{"@id":"https://lemansvirtual.com/#/schema/person/61d94151418a88e98b4cbb6380f76224"},"headline":"Racing and esports elite combine for Le Mans Virtual Series","datePublished":"2021-09-07T13:00:37+00:00","dateModified":"2021-09-14T12:05:25+00:00","mainEntityOfPage":{"@id":"https://lemansvirtual.com/fr/racing-and-esports-elite-combine-for-le-mans-virtual-series/#webpage"},"wordCount":832,"publisher":{"@id":"https://lemansvirtual.com/#organization"},"image":{"@id":"https://lemansvirtual.com/fr/racing-and-esports-elite-combine-for-le-mans-virtual-series/#primaryimage"},"thumbnailUrl":"https://d38jnz52bk9bao.cloudfront.net/wp-content/uploads/2021/09/LMVS_team-graphic-V2.jpg?x65095","inLanguage":"en-GB"},{"@type":"Person","@id":"https://lemansvirtual.com/#/schema/person/61d94151418a88e98b4cbb6380f76224","name":"caretaker","image":{"@type":"ImageObject","@id":"https://lemansvirtual.com/#personlogo","inLanguage":"en-GB","url":"https://secure.gravatar.com/avatar/9f5f2f35185e1e9568fefff7a6e6eeee?s=96&d=mm&r=g","contentUrl":"https://secure.gravatar.com/avatar/9f5f2f35185e1e9568fefff7a6e6eeee?s=96&d=mm&r=g","caption":"caretaker"},"sameAs":["https://lemansvirtual.com"],"url":"https://lemansvirtual.com/author/caretaker/"}]}</script>
+	<!-- / Yoast SEO plugin. -->
+
+
+<link rel='stylesheet' id='lemans-leaderboard-css'  href='../wp-content/plugins/nn-lemans-leaderboard/assets/leaderboard.css@x65095&amp;22_11&amp;ver=5.8.3.css' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-block-library-css'  href='https://d38jnz52bk9bao.cloudfront.net/wp-includes/css/dist/block-library/style.min.css?x65095&amp;ver=5.8.3' type='text/css' media='all' />
+<link rel='stylesheet' id='trp-floater-language-switcher-style-css'  href='https://d38jnz52bk9bao.cloudfront.net/wp-content/plugins/translatepress-multilingual/assets/css/trp-floater-language-switcher.css?x65095&amp;ver=2.1.6' type='text/css' media='all' />
+<link rel='stylesheet' id='trp-language-switcher-style-css'  href='https://d38jnz52bk9bao.cloudfront.net/wp-content/plugins/translatepress-multilingual/assets/css/trp-language-switcher.css?x65095&amp;ver=2.1.6' type='text/css' media='all' />
+<link rel='stylesheet' id='le-mans-style-css'  href='https://d38jnz52bk9bao.cloudfront.net/wp-content/themes/le-mans/dist/css/style.min.css?x65095&amp;ver=07122021' type='text/css' media='all' />
+<link rel="https://api.w.org/" href="../wp-json/index.html" /><link rel="alternate" type="application/json" href="../wp-json/wp/v2/posts/329" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="../xmlrpc.php@rsd" />
+<meta name="generator" content="WordPress 5.8.3" />
+<link rel='shortlink' href='../index.html@p=329.html' />
+<link rel="alternate" type="application/json+oembed" href="../wp-json/oembed/1.0/embed@url=https%253A%252F%252Flemansvirtual.com%252Fracing-and-esports-elite-combine-for-le-mans-virtual-series%252F" />
+<link rel="alternate" type="text/xml+oembed" href="../wp-json/oembed/1.0/embed@url=https%253A%252F%252Flemansvirtual.com%252Fracing-and-esports-elite-combine-for-le-mans-virtual-series%252F&amp;format=xml" />
+<script type="text/javascript" src="https://app.termly.io/embed.min.js" data-auto-block="on" data-website-uuid="509f7268-6328-417d-b978-40f9beeebc1a" ></script>
+
+<meta name="facebook-domain-verification" content="k6puvy7nt0ccweh9zm328mzle3svra" /><link rel="alternate" hreflang="en-GB" href="../index.html@p=329.html"/>
+<link rel="alternate" hreflang="en" href="../index.html@p=329.html"/>
+<link rel="alternate" hreflang="fr-FR" href="../fr/index.html@p=329.html"/>
+<link rel="alternate" hreflang="fr" href="../fr/index.html@p=329.html"/>
+	<!-- Google Tag Manager -->
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-5FC3B4F');</script>
+	<!-- End Google Tag Manager -->
+<style>.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style></head>
+
+<body class="post-template-default single single-post postid-329 single-format-standard translatepress-en_GB lemans-yellow">
+<div class="background">
+	<picture>
+		<source srcset="https://d38jnz52bk9bao.cloudfront.net/wp-content/themes/le-mans-child/dist/images/pattern@2x.png?x65095" media="(min-width: 1921px)" />
+		<source srcset="https://d38jnz52bk9bao.cloudfront.net/wp-content/themes/le-mans-child/dist/images/pattern.png?x65095" media="(max-width: 1920px)" />
+		<img src="https://d38jnz52bk9bao.cloudfront.net/wp-content/themes/le-mans-child/dist/images/pattern.png?x65095" />
+	</picture>
+</div>
+<div id="page" class="site">
+	<a class="skip-link screen-reader-text" href="../index.html@p=329.html#primary">Skip to content</a>
+
+	<header id="masthead" class="site-header">
+		<div class="header-container container">
+			<div class="row">
+				<div class="column">
+					<a class="primary-logo" href="../../www.lemansvirtual.com/index.html"><img src="https://d38jnz52bk9bao.cloudfront.net/wp-content/themes/le-mans/dist/images/yellow/lmvs.svg?x65095" alt="Le Mans Home"></a>
+
+											<div class="next-race" role="complementary">
+							<div><div class="widget-title">Next Race:</div><div class="textwidget custom-html-widget">15 January 2022</div></div>						</div><!-- .next-race -->
+					
+					<div id="countdown" class="countdown">
+						<div id="countdown-timer" class="countdown-timer"></div>
+					</div>
+				</div>
+
+				<div class="column header-buttons">
+																							<a href="http://email.motorsportgames.com/public/webform/render_form/3bgh5qw0z0yg4imw1fwx2ll3duxsp/d942e6f2c695332d927ef49a6d2be80d/addcontact" target="_blank" rel="noopener noreferrer" 
+							id="signup-data"
+							class="custom-button header-contact header-contact-desktop"
+							data-modal-enabled="1"
+							data-cta-url="http://email.motorsportgames.com/public/webform/render_form/3bgh5qw0z0yg4imw1fwx2ll3duxsp/d942e6f2c695332d927ef49a6d2be80d/addcontact"
+															data-modal-heading="Join the Le Mans Virtual mailing list"
+								data-modal-text-paragraph="Subscribe to the Le Mans newsletter to receive the latest news and reminders for every live event in the calendar"
+								data-modal-signup-text="Sign up here"
+													>
+							<span>JOIN MAILING LIST</span>
+						</a>
+									</div>
+			</div>
+		</div>
+
+		<div class="header-navigation">
+			<div class="container">
+				<button class="menu-toggle" id="menu-toggle" aria-controls="primary-menu" aria-expanded="false"></button>
+			</div>
+
+			<nav id="site-navigation" class="main-navigation">
+				<div class="container">
+					<div class="row">
+						<div class="column">
+							<div class="menu-navigation-container"><ul id="primary-menu" class="menu"><li id="menu-item-356" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-356"><a href="../index.html@p=337.html">Meet the Teams</a></li>
+<li id="menu-item-357" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-357"><a href="../index.html@p=335.html">News</a></li>
+<li id="menu-item-703" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-703"><a href="../index.html@p=680.html">Videos</a></li>
+<li id="menu-item-487" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-487"><a href="../index.html@p=472.html">FAQs</a></li>
+<li id="menu-item-509" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-509"><a href="../index.html@p=447.html">Race Calendar</a></li>
+<li id="menu-item-799" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-799"><a href="../index.html@p=435.html">Results</a></li>
+</ul></div>						</div>
+
+						<div class="column social-navigation">
+							<span>Follow Us</span>
+
+							<div class="menu-social-media-container"><ul id="social-menu" class="menu"><li id="menu-item-16" class="menu-twitter menu-item menu-item-type-custom menu-item-object-custom menu-item-16"><a target="_blank" rel="noopener noreferrer" href="https://twitter.com/lemansvirtual">Twitter</a></li>
+<li id="menu-item-17" class="menu-facebook menu-item menu-item-type-custom menu-item-object-custom menu-item-17"><a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/lemansvirtual">Facebook</a></li>
+<li id="menu-item-18" class="menu-instagram menu-item menu-item-type-custom menu-item-object-custom menu-item-18"><a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/lemansvirtual/">Instagram</a></li>
+<li id="menu-item-19" class="menu-youtube menu-item menu-item-type-custom menu-item-object-custom menu-item-19"><a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/traxiongg">YouTube</a></li>
+<li id="menu-item-20" class="menu-twitch menu-item menu-item-type-custom menu-item-object-custom menu-item-20"><a target="_blank" rel="noopener noreferrer" href="https://www.twitch.tv/traxiongg">Twitch</a></li>
+</ul></div>						</div>
+					</div>
+
+					<a id="signup-cta" href="http://email.motorsportgames.com/public/webform/render_form/3bgh5qw0z0yg4imw1fwx2ll3duxsp/d942e6f2c695332d927ef49a6d2be80d/addcontact" target="_blank" rel="noopener noreferrer" class="custom-button"><span>JOIN MAILING LIST</span></a>
+				</div>
+			</nav><!-- .desktop-navigation -->
+		</div>
+	</header><!-- #masthead -->
+	
+	
+
+<section class="blog-post leaderboard">
+	<div class="container">
+		<div class="inner-row">
+			<h1 class="large-heading" id="">Racing and esports elite combine for Le Mans Virtual Series</h1>
+			<h2 class="small-heading"><span class="posted-on">Posted on <time class="entry-date published" datetime="2021-09-07T14:00:37+01:00">7 September 2021</time><time class="updated" datetime="2021-09-14T13:05:25+01:00">14 September 2021</time></span></h2>
+		</div><!-- .inner-row -->
+	</div><!-- .container -->
+</section><!-- .meet-the-teams -->
+
+<main id="primary" class="site-main">
+	<div class="container">
+		<div class="inner-row">
+		<article id="post-329" class="post-329 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorised">
+	
+			<div class="post-thumbnail">
+				<img width="1920" height="1080" src="https://d38jnz52bk9bao.cloudfront.net/wp-content/uploads/2021/09/LMVS_team-graphic-V2.jpg?x65095" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" loading="lazy" />			</div><!-- .post-thumbnail -->
+
+			<div class="entry-content">
+		<p><strong>Silverstone, UK – September 7, 2021.</strong> The entry list for the newly launched Le Mans Virtual Series, the global, elite endurance esports series, has today been revealed and it features some of the world’s best known motorsport and sim racing names. The full season list of teams can be found <a href="https://d38jnz52bk9bao.cloudfront.net/wp-content/uploads/2021/09/LeMansVirtualSeries_team-entry-list_V2_070921.pdf?x65095">HERE</a>, with all driver names – including top stars from many different disciplines around the world – due to be released on Tuesday, September 14.</p>
+<p>For the season finale, the 24 Hours of Le Mans Virtual on January 15/16, an additional 20 cars are expected to join the event with prestige team and star driver names coming from all over the world to add to the excitement.</p>
+<p>Among the 38-strong entries – split between two categories of car (LMP2 – 21 cars; LMGTE – 17) – there are championship and Le Mans-winning worldwide brands such as Alpine, Ferrari, Porsche and BMW, all with multiple entries. Race and/or championship title winners from the WEC and European Le Mans Series (past and present) include Rebellion Racing, JOTA, Panis Racing, Team Project 1 and Team WRT, while some of endurance racing’s most dedicated teams such as GR Racing, Proton<br />
+Competition, D’Station Racing and ARC Bratislava are also featured on the list.</p>
+<p>The real world racers are joined by a large number of highly successful and world-famous teams from sim racing competition. Yas Heat, Mahle Racing Team, Race Clutch Alpine, Romain Grosjean’s R8G Esports team, Floyd ByKolles-Burst, Williams Esports, Team Redline, Red Bull Racing Esports and Jenson Button’s Rocket Simsport team all have one or more entries in the prototype category, and all entries will compete with an ORECA 07 LMP2. Among these is the successful 2020 24 Hours of Le Mans Virtual-winning partnership, Williams Rebellion Esports, back to defend their title.</p>
+<p>In LMGTE, which offers a choice of Aston Martin Vantage GTE, BMW M8 GTE, Corvette C8.R, Ferrari 488 GTE and Porsche 911 RSR GTE cars to entrants, leading marques such as Ferrari, Porsche and BMW will be represented by their own official esports teams together with Red Bull Racing Esports, BMW Team Redline, TESLA R8G Esports, and GR Wolves Racing – a link between the WEC GTE team and British Premier League football team Wolverhampton Wanderers FC.</p>
+<p>Twelve different nations are represented on the entry list from Europe, the Middle and Far East.</p>
+<p>Le Mans Virtual Series is a joint venture between Motorsport Games Inc. (NASDAQ: MSGM) (“Motorsport Games”) &#8212; a leading racing game developer, publisher and esports ecosystem provider of official motorsport racing series throughout the world &#8212; and the Automobile Club de l’Ouest (ACO) &#8212; the creators and organizers of the world-famous 24 Hours of Le Mans and promoter of the FIA WorldEndurance Championship (FIA WEC). It will take place over five rounds with the 24 Hours of Le Mans Virtual as its grand finale. This twice-round-the-clock event will be a live, televised event within the 2022 Autosport International motorsport show in Birmingham, UK on January 15/16.</p>
+<p>The calendar of events features some of the world’s most famous racetracks – Monza, Spa, Nürburgring, Sebring and Le Mans – which will challenge all the drivers, international FIA-licensed and sim racers alike, and thrill the millions of esports enthusiasts worldwide.</p>
+<p>For further media information contact Fiona Miller, Miller Media &amp; Communications, on +44 7770 371332 or miller.media10@btinternet.com<br />
+www.lemansvirtual.com</p>
+<p><strong>About Le Mans Virtual Series</strong><br />
+Le Mans Virtual Series is a global, elite esports series made up of five rounds which bring together endurance racing and sim racing’ top teams to compete on some of the world’s most famous racetracks. International FIA-licensed real-world drivers are teamed up with leading esports protagonists to take on endurance classics for a total prize fund of US$250,000, culminating in the prestigious 24 Hours of Le Mans Virtual which will take place live and televised at the Autosport Show International at the Birmingham NEC (UK). Le Mans Virtual Series is a joint venture between leading racing game developer, publisher and esports ecosystem provider of official motorsport racing series throughout the world, Motorsport Games, and the Automobile Club de l’Ouest (ACO)- the creator and organizer of the world-famous 24 Hours of Le Mans and promoter of the FIA World Endurance Championship (FIA WEC).</p>
+<p>Round 1    4 Hours of Monza, Italy    September 25, 2021 Online only<br />
+Round 2    6 Hours of Spa, Belgium    October 16, 2021 Online only<br />
+Round 3    8 Hours of Nürburgring, Germany    November 13, 2021 Online only<br />
+Round 4    6 Hours of Sebring, USA    December 18, 2021 Online only<br />
+Round 5    24 Hours of Le Mans Virtual    January 15/16, 2022 ASI, Birmingham, UK</p>
+<p><strong>About Motorsport Games</strong><br />
+Motorsport Games, a Motorsport Network company, combines innovative and engaging video games with exciting esports competitions and content for racing fans and gamers around the globe. The Company is the officially licensed video game developer and publisher for iconic motorsport racing series including NASCAR, INDYCAR, 24 Hours of Le Mans and the British Touring Car Championship (“BTCC”). Motorsport Games is an award-winning esports partner of choice for 24 Hours of Le Mans, Formula E, BTCC, the FIA World Rallycross Championship and the eNASCAR Heat Pro League, among others.</p>
+	</div><!-- .entry-content -->
+</article><!-- #post-329 -->
+		</div>
+	</div>
+</main><!-- #main -->
+
+
+	 <!-- Partners -->
+
+<div class="partners">
+
+	<div class="container">
+		<h2 class="large-heading">Our Partners</h2>
+
+		<div class="partner-logos">
+			<div class="inner-row">
+				<div class="column-row">
+
+									<div class="partner-logo">
+						<a href="https://www.goodyear.com/" target="_blank" rel="noopener noreferrer">
+							<img src="https://d38jnz52bk9bao.cloudfront.net/wp-content/uploads/2021/12/Goodyear_Logo-3.png?x65095" alt="" loading="lazy"
+								 width="300" height="59">
+						</a>
+						<div class="partner-text">Official Tyre Partner</div>
+					</div>
+									<div class="partner-logo">
+						<a href="https://www.thrustmaster.com/" target="_blank" rel="noopener noreferrer">
+							<img src="https://d38jnz52bk9bao.cloudfront.net/wp-content/uploads/2021/12/Thrustmaster-logo-4.png?x65095" alt="" loading="lazy"
+								 width="300" height="59">
+						</a>
+						<div class="partner-text">Official Hardware Partner</div>
+					</div>
+									<div class="partner-logo">
+						<a href="https://www.algorand.com/" target="_blank" rel="noopener noreferrer">
+							<img src="https://d38jnz52bk9bao.cloudfront.net/wp-content/uploads/2021/12/algorand_full_logo_white.png?x65095" alt="" loading="lazy"
+								 width="300" height="59">
+						</a>
+						<div class="partner-text">Official Blockchain Partner</div>
+					</div>
+									<div class="partner-logo">
+						<a href="https://totalenergies.com/" target="_blank" rel="noopener noreferrer">
+							<img src="https://d38jnz52bk9bao.cloudfront.net/wp-content/uploads/2021/12/TotalEnergies_Logo_RGB-2.png?x65095" alt="" loading="lazy"
+								 width="300" height="59">
+						</a>
+						<div class="partner-text">Official Energy Partner</div>
+					</div>
+									<div class="partner-logo">
+						<a href="https://www.lego.com/en-gb/themes/technic" target="_blank" rel="noopener noreferrer">
+							<img src="https://d38jnz52bk9bao.cloudfront.net/wp-content/uploads/2021/12/lego_technic_logo.png?x65095" alt="" loading="lazy"
+								 width="300" height="59">
+						</a>
+						<div class="partner-text">Official Engineering Partner</div>
+					</div>
+									<div class="partner-logo">
+						<a href="https://www.rolex.com/" target="_blank" rel="noopener noreferrer">
+							<img src="https://d38jnz52bk9bao.cloudfront.net/wp-content/uploads/2021/12/ROLEX_2012_CMYK_WHITE-GOLD.png?x65095" alt="" loading="lazy"
+								 width="300" height="59">
+						</a>
+						<div class="partner-text">Official Timepiece Partner</div>
+					</div>
+				
+				</div><!-- .column-row -->
+			</div><!-- .inner-row -->
+		</div><!-- .partner-logos -->
+	</div><!-- .container -->
+</div><!-- .partners -->
+	<footer id="colophon" class="site-footer">
+		<div class="container">
+			<div class="footer-logos">
+		 		<a href="https://motorsportgames.com/" target="_blank" rel="noopener noreferrer">
+		 			<img src="https://d38jnz52bk9bao.cloudfront.net/wp-content/themes/le-mans/dist/images/partners/MotorsportGames.svg?x65095" alt="Motorsport Games" loading="lazy">
+		 		</a>
+		 		<a href="https://www.fiawec.com/" target="_blank" rel="noopener noreferrer">
+		 			<img src="https://d38jnz52bk9bao.cloudfront.net/wp-content/themes/le-mans/dist/images/partners/WEC.svg?x65095" alt="WEC" loading="lazy">
+		 		</a>
+		 		<a href="https://www.24h-lemans.com/en" target="_blank" rel="noopener noreferrer">
+		 			<img src="https://d38jnz52bk9bao.cloudfront.net/wp-content/themes/le-mans/dist/images/partners/LeMans.svg?x65095" alt="LeMans" loading="lazy">
+		 		</a>
+			</div>
+
+			<div class="footer-links">
+								<a href="https://motorsportgames.com/privacy-policy/" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+				<a href="https://motorsportgames.com/terms-conditions/" target="_blank" rel="noopener noreferrer">Terms & Conditions</a>
+				<a href="https://motorsportgames.com/cookie-policy/" target="_blank" rel="noopener noreferrer">Cookie Policy</a>
+				<a href="https://app.termly.io/notify/f80da7c5-3b23-41a1-af0c-abb631d54209" target="_blank" rel="noopener noreferrer">Do Not Sell My Info</a>
+			</div>
+		</div><!-- .container -->
+	</footer><!-- #colophon -->
+</div><!-- #page -->
+
+        <div id="trp-floater-ls" onclick="" data-no-translation class="trp-language-switcher-container trp-floater-ls-names trp-bottom-right trp-color-dark" >
+            <div id="trp-floater-ls-current-language" class="trp-with-flags">
+
+                <a href="../index.html@p=329.html#" class="trp-floater-ls-disabled-language trp-ls-disabled-language" onclick="event.preventDefault()">
+					<img class="trp-flag-image" src="https://d38jnz52bk9bao.cloudfront.net/wp-content/plugins/translatepress-multilingual/assets/images/flags/en_GB.png?x65095" width="18" height="12" alt="en_GB" title="English">English				</a>
+
+            </div>
+            <div id="trp-floater-ls-language-list" class="trp-with-flags" >
+
+                <div class="trp-language-wrap">                    <a href="../fr/index.html@p=329.html"
+                         title="French">
+          						  <img class="trp-flag-image" src="https://d38jnz52bk9bao.cloudfront.net/wp-content/plugins/translatepress-multilingual/assets/images/flags/fr_FR.png?x65095" width="18" height="12" alt="fr_FR" title="French">French					          </a>
+                <a href="../index.html@p=329.html#" class="trp-floater-ls-disabled-language trp-ls-disabled-language" onclick="event.preventDefault()"><img class="trp-flag-image" src="https://d38jnz52bk9bao.cloudfront.net/wp-content/plugins/translatepress-multilingual/assets/images/flags/en_GB.png?x65095" width="18" height="12" alt="en_GB" title="English">English</a></div>            </div>
+        </div>
+
+    		<script>
+			window.addEventListener('load', function () {
+				let language = document.body.classList.contains('translatepress-fr_FR') ? 'FR' : 'en'; // Other EN configurations require uppercase
+				let iframe = '';
+				if (window.innerWidth > 900) {
+					iframe = `<iframe src="https://static.rolex.com/clocks/2021/lemans_virtual_desk_${language}_HTML_320x100/rolex.html" ` +
+					`style="min-width:340px;height:100px;border:0;margin:0;padding:0;overflow:hidden;scroll:none" SCROLLING=NO frameborder="NO"></iframe>`;
+				} else {
+					language = language.toUpperCase();
+					iframe = `<iframe src="https://static.rolex.com/clocks/2021/lemans_virtual_mobile_${language}_HTML_320x70/rolex.html"` +
+					`style="min-width: 320px;width:100%;height:70px;border:0;margin:0;padding:0;overflow:hidden;scroll:none" SCROLLING=NO frameborder="NO"></iframe>`;
+				}
+
+				document.getElementById("countdown").innerHTML = iframe;
+			});
+
+		</script>
+			<!-- Google Tag Manager (noscript) -->
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5FC3B4F"
+	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- End Google Tag Manager (noscript) -->
+<script type='text/javascript' src='../wp-content/plugins/nn-lemans-leaderboard/assets/leaderboard.js@x65095&amp;22_11&amp;ver=5.8.3' id='lemans-leaderboard-js'></script>
+<script type='text/javascript' src='https://d38jnz52bk9bao.cloudfront.net/wp-content/themes/le-mans/dist/js/script.min.js?x65095&amp;ver=11112021' id='project-n-script-js'></script>
+
+</body>
+</html>
+
+<!--
+Performance optimized by W3 Total Cache. Learn more: https://www.boldgrid.com/w3-total-cache/
+
+Object Caching 98/102 objects using redis
+Content Delivery Network via Amazon Web Services: CloudFront: d38jnz52bk9bao.cloudfront.net
+Database Caching 6/14 queries in 0.004 seconds using redis
+
+Served from: lemansvirtual.com @ 2022-01-13 05:16:28 by W3 Total Cache
+-->
