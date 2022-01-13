@@ -1,10 +1,18 @@
 # Resources regarding the 2022 24 Hours of Le Mans "Virtual Online Event"
 
+## Live
+
+- [**YouTube**](https://www.youtube.com/embed/IYMz79albx0?controls=0)
+- [Live Timing](https://livetiming.alkamelsystems.com/lmvirtualseries?fbclid=IwAR2oafRl0NPEEeyuOf6M6Jiv8KHHJw5FsNsL4Bqs1omoP_94fnpnloqW4pk)
+- [Facebook](https://fb.me/e/1LrKsBZDY)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/IYMz79albx0?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ***
+
 ![LMV2022](https://user-images.githubusercontent.com/43663476/149269391-e26c881e-39f0-4340-8a81-35fe7241785d.png)
 
-# The 24 Hours of Le Mans Virtual Online event will take place on 15/16th January
+## The 24 Hours of Le Mans Virtual Online event will take place on 15/16th January
 
 Save the date and get ready to follow the grand finale of the 2021/22 Le Mans Virtual Series, the 24 Hours of Le Mans Virtual.  The biggest esports event in endurance racing will take place online on **15/16th January 2022**, and the official poster has today been revealed.  More info to come so stay tuned!
 
@@ -12,7 +20,7 @@ For further media information contact Fiona Miller, Miller Media & Communication
 
 [www.lemansvirtual.com](http://www.lemansvirtual.com)
 
-## About Le Mans Virtual Series
+### About Le Mans Virtual Series
 
 Le Mans Virtual Series is a global, elite esports series made up of 5 rounds which bring together endurance racing and sim racing’s top teams to compete on some of the world’s most famous racetracks. International FIA-licensed real-world drivers are teamed up with leading esports protagonists to take on endurance classics for a total prize fund of US$250,000, culminating in the prestigious 24 Hours of Le Mans Virtual which will take place live and televised at the Autosport Show International in Birmingham, UK. The Le Mans Virtual Series is a joint venture between leading racing game developer, publisher and esports ecosystem provider of official motorsport racing series throughout the world, Motorsport Games, and ACO-the creator and organizer of the world-famous 24 Hours of Le Mans and promoter of the FIA WEC.  [www.lemansvirtual.com](http://www.lemansvirtual.com)
 

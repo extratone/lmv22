@@ -1,0 +1,41 @@
+BEGIN:VCALENDAR
+PRODID:-//Facebook//NONSGML Facebook Events V1.0//EN
+X-PUBLISHED-TTL:PT12H
+X-ORIGINAL-URL:https://www.facebook.com/events/436788914649701/
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+DTSTAMP:20211222T142305Z
+LAST-MODIFIED:20211222T142305Z
+CREATED:20211222T142120Z
+SEQUENCE:105
+ORGANIZER;CN=Traxion.GG:MAILTO:noreply@facebookmail.com
+DTSTART:20220115T123000Z
+DTEND:20220115T153000Z
+UID:e436788914649701@facebook.com
+SUMMARY:LIVE: 24 Hours of Le Mans Virtual: FINAL - Part 1
+URL:https://www.facebook.com/events/436788914649701/
+DESCRIPTION:Le Mans Virtual Series returns as 
+ a five round premier endurance cha
+ mpionship\, including a 24-hour fin
+ ale and a $250K prize fund.\n\nThe f
+ irst four races in the Le Mans Vir
+ tual Series were held online betwe
+ en September and December\, with th
+ e 24 Hours of Le Mans Virtual taki
+ ng place as the climax to the icon
+ ic endurance esports championship.
+ \n\nTune in on 15th January 2022 at 
+ 12.30pm BST to watch the full 24 h
+ our-long final LIVE on Traxion.gg'
+ s YouTube\, Facebook and Twitch cha
+ nnels.\n\nLive timing⏱️: https:/
+ /livetiming.alkamelsystems.com/lmv
+ irtualseries\n\nhttps://www.facebook
+ .com/events/436788914649701/
+CLASS:PUBLIC
+STATUS:CONFIRMED
+PARTSTAT:ACCEPTED
+END:VEVENT
+END:VCALENDAR
